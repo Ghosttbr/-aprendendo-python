@@ -14,7 +14,7 @@ Quero aprender por meio de desafios práticos, aplicando aos poucos os conceitos
 | 02 | Calculadora Compras | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, operações matemáticas |
 | 03 | Sistema Descontos | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, operações matemáticas, condicionais, comparações |
 | 04 | Classificacao Clientes | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, operações matemáticas, condicionais, comparações |
-| 05 | Aprovação de candidatos | `if`, `elif`, `else` e condições aninhadas |
+| 05 | Aprovacao Candidatos | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, operações matemáticas, condicionais, comparações, operadores lógicos |
 | 06 | Sistema de acesso | Operadores lógicos e condições |
 | 07 | Descontos de loja | `or`, `if`, `elif` e `else` |
 
