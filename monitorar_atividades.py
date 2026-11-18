@@ -24,7 +24,10 @@ TASK_NAME = "AprendendoPythonAutoPublish"
 STABLE_SECONDS = 300
 POLL_SECONDS = 10
 EXPECTED_REMOTE = "https://github.com/Ghosttbr/-aprendendo-python.git"
-ACTIVITY_NAME = re.compile(r"^(?P<number>\d{2})-(?P<slug>[a-z0-9]+(?:-[a-z0-9]+)*)\.py$", re.I)
+ACTIVITY_NAME = re.compile(
+    r"^(?:atividade (?P<activity_number>\d+)|(?P<number>\d{2})-(?P<slug>[a-z0-9]+(?:-[a-z0-9]+)*))\.py$",
+    re.I,
+)
 
 DATA_DIR = Path(os.environ.get("LOCALAPPDATA", Path.home())) / "AprendendoPythonWatcher"
 LOG_FILE = DATA_DIR / "watcher.log"
@@ -196,7 +199,7 @@ def process_activity(path: Path, state: dict[str, str], current_hash: str) -> bo
     match = ACTIVITY_NAME.match(path.name)
     if not match:
         return False
-    number = int(match.group("number"))
+    number = int(match.group("activity_number") or match.group("number"))
     slug = match.group("slug")
     try:
         source = path.read_text(encoding="utf-8-sig")
@@ -215,7 +218,7 @@ def process_activity(path: Path, state: dict[str, str], current_hash: str) -> bo
         log("Publicacao pausada: README.md ou docs/progresso.md tem alteracoes manuais.")
         return False
 
-    title = " ".join(word.capitalize() for word in slug.split("-"))
+    title = f"Atividade {number:02d}" if slug is None else " ".join(word.capitalize() for word in slug.split("-"))
     concepts = infer_concepts(tree)
     update_table(ROOT / "README.md", number, [title, concepts])
     update_table(ROOT / "docs" / "progresso.md", number, [title, concepts, "Concluída"])
