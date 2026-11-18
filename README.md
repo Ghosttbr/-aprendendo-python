@@ -32,7 +32,7 @@ Até aqui, pratiquei entrada e saída de dados, variáveis, conversão de tipos,
 
 ## Como atualizar o repositório
 
-O monitor local acompanha a pasta `atividades`. Quando um arquivo com nome no padrão `08-nome-da-atividade.py` fica sem alterações por cinco minutos, passa na verificação de sintaxe e não contém e-mails, endereços IP/MAC, tokens ou chaves privadas detectáveis, o README e o progresso são atualizados e a alteração é enviada ao GitHub. O monitor inicia junto com sua sessão do Windows. A atividade precisa estar pronta antes de ser salva nessa pasta; o monitor não consegue deduzir se você ainda está desenvolvendo a ideia.
+O monitor local acompanha a pasta `atividades`. Quando um arquivo com nome no padrão `08-nome-da-atividade.py` fica sem alterações por cinco minutos, passa na verificação de sintaxe e não contém padrões detectáveis de e-mail, telefone, CPF, IP/MAC ou credenciais, o README e o progresso são atualizados e a alteração é enviada ao GitHub. O monitor inicia junto com sua sessão do Windows. Salve na pasta somente atividades prontas: o monitor não consegue deduzir se você ainda está desenvolvendo a ideia. Para desativar o início automático, execute `python monitorar_atividades.py --uninstall` no terminal do projeto.
 
 Se o monitor estiver pausado ou você preferir atualizar manualmente:
 

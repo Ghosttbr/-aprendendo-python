@@ -34,8 +34,11 @@ PRIVACY_CHECKS = (
     ("email", re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.I)),
     ("endereco IPv4", re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")),
     ("endereco MAC", re.compile(r"\b(?:[0-9A-F]{2}[:-]){5}[0-9A-F]{2}\b", re.I)),
+    ("CPF", re.compile(r"\b\d{3}\.\d{3}\.\d{3}-\d{2}\b")),
+    ("telefone", re.compile(r"(?:\+?55\s*)?(?:\(?\d{2}\)?\s*)?9?\d{4}[- ]\d{4}\b")),
     ("chave/token", re.compile(r"\b(?:gh[pousr]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16})\b")),
     ("chave privada", re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----")),
+    ("senha/chave literal", re.compile(r"\b(?:password|senha|api[_-]?key|token|secret)\s*=\s*['\"][^'\"]{4,}['\"]", re.I)),
 )
 INCOMPLETE = re.compile(r"\b(?:TODO|FIXME|PREENCHER|CODIGO PRECISA SER PREENCHIDO)\b", re.I)
 
@@ -300,15 +303,49 @@ def install_task() -> None:
         errors="replace",
         capture_output=True,
     )
-    if result.returncode:
-        raise RuntimeError(result.stderr.strip() or result.stdout.strip() or "nao foi possivel registrar a tarefa")
-    subprocess.run(["schtasks", "/Run", "/TN", TASK_NAME], check=True, capture_output=True)
-    print(f"Monitor instalado e iniciado: {TASK_NAME}")
+    if result.returncode == 0:
+        subprocess.run(["schtasks", "/Run", "/TN", TASK_NAME], check=True, capture_output=True)
+        print(f"Monitor instalado e iniciado: {TASK_NAME}")
+        return
+
+    appdata = Path(os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming"))
+    startup = appdata / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup"
+    startup.mkdir(parents=True, exist_ok=True)
+    launcher = startup / "AprendendoPythonWatcher.vbs"
+    vbs_command = f'"""{pythonw}"" ""{Path(__file__).resolve()}"""'
+    launcher.write_text(
+        'Set shell = CreateObject("WScript.Shell")\n'
+        f"shell.Run {vbs_command}, 0, False\n",
+        encoding="utf-8",
+    )
+    flags = getattr(subprocess, "DETACHED_PROCESS", 0) | getattr(subprocess, "CREATE_NO_WINDOW", 0)
+    subprocess.Popen(
+        [str(pythonw), str(Path(__file__).resolve())],
+        cwd=ROOT,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        creationflags=flags,
+    )
+    log("Inicializacao automatica configurada pela pasta Startup do usuario.")
+    print(f"Monitor iniciado e adicionado a inicializacao: {launcher}")
+
+
+def uninstall() -> None:
+    appdata = Path(os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming"))
+    launcher = appdata / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup" / "AprendendoPythonWatcher.vbs"
+    if launcher.exists():
+        launcher.unlink()
+        print("Inicializacao automatica removida.")
+    else:
+        print("Atalho de inicializacao nao encontrado.")
 
 
 if __name__ == "__main__":
     if "--install" in sys.argv:
         install_task()
+    elif "--uninstall" in sys.argv:
+        uninstall()
     else:
         watcher.last_push_check = 0.0
         try:
