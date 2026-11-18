@@ -1,0 +1,10 @@
+qual_produto = input("Olá, seja muito bem vindo ao nosso sistema! Qual produto você comprou?")
+preço = float(input("Qual o preço?"))
+unidades = int(input("Quantas unidades?"))
+
+print("--- RESUMO DA COMPRA ---")
+print("Produto:", qual_produto)
+print(f"Preço:", preço)
+print("Preço Unitario:", preço/unidades)
+print("Valor total:", preço*unidades)
+print("Quantidade Total:", unidades)
