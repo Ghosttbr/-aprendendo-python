@@ -15,7 +15,7 @@ Quero aprender por meio de desafios práticos, aplicando aos poucos os conceitos
 | 03 | Sistema Descontos | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, operações matemáticas, condicionais, comparações |
 | 04 | Classificacao Clientes | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, operações matemáticas, condicionais, comparações |
 | 05 | Aprovacao Candidatos | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, operações matemáticas, condicionais, comparações, operadores lógicos |
-| 06 | Sistema de acesso | Operadores lógicos e condições |
+| 06 | Sistema Acesso | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, condicionais, comparações, operadores lógicos |
 | 07 | Descontos de loja | `or`, `if`, `elif` e `else` |
 
 O registro de conclusão e os conceitos de cada atividade também estão em [`docs/progresso.md`](docs/progresso.md).
