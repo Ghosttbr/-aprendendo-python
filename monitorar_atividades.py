@@ -61,6 +61,7 @@ def git(*args: str, check: bool = True, env: dict[str, str] | None = None) -> su
         errors="replace",
         capture_output=True,
         env=env,
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
     )
     if check and result.returncode:
         raise RuntimeError(result.stderr.strip() or result.stdout.strip() or "falha no Git")
