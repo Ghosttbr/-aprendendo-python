@@ -10,7 +10,7 @@ Quero aprender por meio de desafios práticos, aplicando aos poucos os conceitos
 
 | Nº | Atividade | Conceitos praticados |
 | --- | --- | --- |
-| 01 | Cadastro e apresentação de usuário | `input()`, `print()` e variáveis |
+| 01 | Cadastro Usuario | entrada de dados (`input()`), saída de dados (`print()`), variáveis |
 | 02 | Calculadora de compras | Operações matemáticas e conversão de tipos |
 | 03 | Sistema de descontos | `if` e `else` |
 | 04 | Classificação de clientes | Condições e operadores de comparação |

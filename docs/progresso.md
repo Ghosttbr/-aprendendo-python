@@ -2,7 +2,7 @@
 
 | Nº da atividade | Nome | Conceitos praticados | Status |
 | --- | --- | --- | --- |
-| 01 | Cadastro e apresentação de usuário | `input()`, `print()` e variáveis | Concluída |
+| 01 | Cadastro Usuario | entrada de dados (`input()`), saída de dados (`print()`), variáveis | Concluída |
 | 02 | Calculadora de compras | Operações matemáticas e conversão de tipos | Concluída |
 | 03 | Sistema de descontos | `if` e `else` | Concluída |
 | 04 | Classificação de clientes | Condições e operadores de comparação | Concluída |
