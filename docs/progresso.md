@@ -8,6 +8,6 @@
 | 04 | Classificacao Clientes | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, operações matemáticas, condicionais, comparações | Concluída |
 | 05 | Aprovacao Candidatos | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, operações matemáticas, condicionais, comparações, operadores lógicos | Concluída |
 | 06 | Sistema Acesso | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, condicionais, comparações, operadores lógicos | Concluída |
-| 07 | Descontos de loja | `or`, `if`, `elif` e `else` | Concluída |
+| 07 | Descontos Loja | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, operações matemáticas, condicionais, comparações, operadores lógicos | Concluída |
 | 08 | A definir | A registrar | Pendente |
 | 09 | A definir | A registrar | Pendente |
