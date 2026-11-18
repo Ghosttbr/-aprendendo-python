@@ -68,6 +68,18 @@ def git(*args: str, check: bool = True, env: dict[str, str] | None = None) -> su
     return result
 
 
+def git_bytes(*args: str, check: bool = True) -> subprocess.CompletedProcess[bytes]:
+    result = subprocess.run(
+        ["git", "-C", str(ROOT), *args],
+        capture_output=True,
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+    )
+    if check and result.returncode:
+        detail = result.stderr.decode("utf-8", errors="replace").strip()
+        raise RuntimeError(detail or "falha no Git")
+    return result
+
+
 def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
@@ -82,9 +94,9 @@ def load_state() -> dict[str, str]:
     state: dict[str, str] = {}
     tracked = git("ls-files", "--", "atividades", check=False)
     for relative in tracked.stdout.splitlines():
-        result = git("show", f"HEAD:{relative}", check=False)
+        result = git_bytes("show", f"HEAD:{relative}", check=False)
         if result.returncode == 0:
-            state[Path(relative).name] = digest(result.stdout.encode("utf-8"))
+            state[Path(relative).name] = digest(result.stdout)
     return state
 
 
@@ -171,8 +183,8 @@ def privacy_problem(source: str) -> str | None:
 
 
 def published_blob(name: str) -> str | None:
-    result = git("show", f"HEAD:atividades/{name}", check=False)
-    return digest(result.stdout.encode("utf-8")) if result.returncode == 0 else None
+    result = git_bytes("show", f"HEAD:atividades/{name}", check=False)
+    return digest(result.stdout) if result.returncode == 0 else None
 
 
 def push_local_commits() -> bool:

@@ -10,13 +10,13 @@ Quero aprender por meio de desafios práticos, aplicando aos poucos os conceitos
 
 | Nº | Atividade | Conceitos praticados |
 | --- | --- | --- |
-| 01 | Cadastro Usuario | entrada de dados (`input()`), saída de dados (`print()`), variáveis |
-| 02 | Calculadora Compras | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, operações matemáticas |
-| 03 | Sistema Descontos | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, operações matemáticas, condicionais, comparações |
-| 04 | Classificacao Clientes | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, operações matemáticas, condicionais, comparações |
-| 05 | Aprovacao Candidatos | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, operações matemáticas, condicionais, comparações, operadores lógicos |
-| 06 | Sistema Acesso | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, condicionais, comparações, operadores lógicos |
-| 07 | Descontos Loja | entrada de dados (`input()`), saída de dados (`print()`), variáveis, conversão de tipos, operações matemáticas, condicionais, comparações, operadores lógicos |
+| 01 | Cadastro e apresentação de usuário | `input()`, `print()` e variáveis |
+| 02 | Calculadora de compras | Operações matemáticas e conversão de tipos |
+| 03 | Sistema de descontos | `if` e `else` |
+| 04 | Classificação de clientes | Condições e operadores de comparação |
+| 05 | Aprovação de candidatos | `if`, `elif`, `else` e condições aninhadas |
+| 06 | Sistema de acesso | Operadores lógicos e condições |
+| 07 | Descontos de loja | `or`, `if`, `elif` e `else` |
 
 O registro de conclusão e os conceitos de cada atividade também estão em [`docs/progresso.md`](docs/progresso.md).
 
