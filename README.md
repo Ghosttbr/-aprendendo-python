@@ -32,7 +32,9 @@ Até aqui, pratiquei entrada e saída de dados, variáveis, conversão de tipos,
 
 ## Como atualizar o repositório
 
-Quando concluir uma nova atividade:
+O monitor local acompanha a pasta `atividades`. Quando um arquivo com nome no padrão `08-nome-da-atividade.py` fica sem alterações por cinco minutos, passa na verificação de sintaxe e não contém e-mails, endereços IP/MAC, tokens ou chaves privadas detectáveis, o README e o progresso são atualizados e a alteração é enviada ao GitHub. O monitor inicia junto com sua sessão do Windows. A atividade precisa estar pronta antes de ser salva nessa pasta; o monitor não consegue deduzir se você ainda está desenvolvendo a ideia.
+
+Se o monitor estiver pausado ou você preferir atualizar manualmente:
 
 1. Salve o código na pasta `atividades`, seguindo a numeração e o padrão de nomes existente.
 2. Acrescente a atividade à lista deste README e à tabela de [`docs/progresso.md`](docs/progresso.md), com os conceitos praticados e o status.
