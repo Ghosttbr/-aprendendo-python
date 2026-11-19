@@ -15,6 +15,7 @@ import re
 import subprocess
 import sys
 import time
+import unicodedata
 from pathlib import Path
 
 
@@ -182,6 +183,36 @@ def privacy_problem(source: str) -> str | None:
     return None
 
 
+def infer_topic(source: str, number: int, existing_slug: str | None) -> tuple[str | None, str]:
+    if existing_slug:
+        title = " ".join(word.capitalize() for word in existing_slug.split("-"))
+        return existing_slug, title
+
+    explicit = re.search(r"(?im)^\s*#\s*(?:tema|atividade)\s*:\s*(.+?)\s*$", source)
+    if explicit:
+        title = explicit.group(1).strip()
+        plain = unicodedata.normalize("NFKD", title).encode("ascii", "ignore").decode("ascii")
+        slug = re.sub(r"[^a-z0-9]+", "-", plain.lower()).strip("-")
+        if slug:
+            return slug, title
+
+    normalized = unicodedata.normalize("NFKD", source).encode("ascii", "ignore").decode("ascii").lower()
+    rules = (
+        ("aprovacao-candidatos", "Aprovação de candidatos", r"enem|sisu|candidat|nota de corte|aprovad"),
+        ("sistema-acesso", "Sistema de acesso", r"sistema de acesso|acesso permitido|autorizacao|login|senha"),
+        ("classificacao-clientes", "Classificação de clientes", r"classific|categoria.{0,30}cliente|cliente.{0,30}categoria|\bvip\b.{0,30}\bespecial\b"),
+        ("descontos-loja", "Descontos de loja", r"desconto.{0,50}(loja|vip|especial|comum)|(?:loja|vip|especial).{0,50}desconto"),
+        ("sistema-descontos", "Sistema de descontos", r"desconto"),
+        ("calculadora-compras", "Calculadora de compras", r"compra.{0,50}(produto|unidades|preco|valor total)|(produto|unidades).{0,50}compra"),
+        ("cadastro-usuario", "Cadastro de usuário", r"cadastro.{0,30}(usuario|cliente)|usuario.{0,30}(nome|cidade|idade)"),
+        ("calculadora", "Calculadora", r"calculadora|operacoes matematicas"),
+    )
+    for slug, title, pattern in rules:
+        if re.search(pattern, normalized):
+            return slug, title
+    return None, f"Atividade {number:02d}"
+
+
 def published_blob(name: str) -> str | None:
     result = git_bytes("show", f"HEAD:atividades/{name}", check=False)
     return digest(result.stdout) if result.returncode == 0 else None
@@ -231,11 +262,19 @@ def process_activity(path: Path, state: dict[str, str], current_hash: str) -> bo
         log("Publicacao pausada: README.md ou docs/progresso.md tem alteracoes manuais.")
         return False
 
-    title = f"Atividade {number:02d}" if slug is None else " ".join(word.capitalize() for word in slug.split("-"))
+    topic_slug, title = infer_topic(source, number, slug)
+    target_path = path
+    if topic_slug:
+        target_path = ACTIVITIES / f"{number:02d}-{topic_slug}.py"
+        if target_path != path and target_path.exists():
+            log(f"{path.name}: o nome descritivo {target_path.name} ja existe; arquivo mantido sem renomear.")
+            target_path = path
     concepts = infer_concepts(tree)
     update_table(ROOT / "README.md", number, [title, concepts])
     update_table(ROOT / "docs" / "progresso.md", number, [title, concepts, "Concluída"])
-    staged = git("add", "--", "README.md", "docs/progresso.md", f"atividades/{path.name}", check=False)
+    if target_path != path:
+        path.replace(target_path)
+    staged = git("add", "-A", "--", "README.md", "docs/progresso.md", f"atividades/{path.name}", f"atividades/{target_path.name}", check=False)
     if staged.returncode:
         log(f"{path.name}: nao foi possivel preparar os arquivos.")
         return False
@@ -246,7 +285,8 @@ def process_activity(path: Path, state: dict[str, str], current_hash: str) -> bo
         return False
     if not push_local_commits():
         return False
-    state[path.name] = current_hash
+    state.pop(path.name, None)
+    state[target_path.name] = current_hash
     save_state(state)
     log(f"Atividade {number:02d} atualizada e publicada.")
     return True
